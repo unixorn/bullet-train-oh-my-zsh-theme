@@ -305,10 +305,17 @@ context() {
   local user="$(whoami)"
   [[ "$user" != "$BULLETTRAIN_CONTEXT_DEFAULT_USER" || -n "$BULLETTRAIN_IS_SSH_CLIENT" ]] && echo -n "${user}@%m"
 }
+
+xterm_context() {
+  local user="$(whoami)"
+  echo -n "\033]0;${user}@%m\007"
+}
+
 prompt_context() {
   [[ $BULLETTRAIN_CONTEXT_SHOW == false ]] && return
 
   local _context="$(context)"
+  xterm_context
   [[ -n "$_context" ]] && prompt_segment $BULLETTRAIN_CONTEXT_BG $BULLETTRAIN_CONTEXT_FG "$_context"
 }
 
